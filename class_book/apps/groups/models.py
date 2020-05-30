@@ -8,9 +8,8 @@ class User(AbstractUser):
     group = models.BooleanField(default=True)
     student = models.BooleanField(default=False)
 
-
-    class Meta(AbstractUser.Meta):
-        swappable = 'AUTH_USER_MODEL'
+    # class Meta(AbstractUser.Meta):
+    #     swappable = 'AUTH_USER_MODEL'
 
 
 class Group(models.Model):
