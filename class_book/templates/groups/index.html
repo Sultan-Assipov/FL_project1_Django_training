@@ -1,0 +1,49 @@
+{% extends "main/wrapper.html" %}
+
+{% block content %}
+
+    <div class="container">
+        <h2 class="mb-5">Создание группы {{ subject.name }}</h2>
+        <form class="w-25" action="/groups/" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="level3">Название</label>
+                <input type="text" class="form-control" id="level3" name="name">
+                <label for="level3">Почта</label>
+                <input type="text" class="form-control" id="level3" name="email">
+                <label for="level3">Пароль</label>
+                <input type="text" class="form-control" id="level3" name="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
+    </div>
+
+    <div class="container mt-5">
+        <h2 class="mb-5">Список групп </h2>
+        <table class="table w-50">
+            <thead>
+            <tr>
+                <th scope="col">Название</th>
+                <th scope="col">Почта</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for group in object_list %}
+                <tr>
+                    <th scope="row"><a href="/groups/{{ group.id }}">{{ group.name }}</a></th>
+                    <th scope="row"><a href="/groups/{{ group.id }}">{{ group.email }}</a></th>
+                    <th scope="row"><a href="/groups/{{ group.id }}">{{ group.password }}</a></th>
+                    <td class="d-flex justify-content-end">
+                        <form action="/groups/{{ group.id }}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger" name="delete" value="{{ item.id }}">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
