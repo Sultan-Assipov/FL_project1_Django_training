@@ -150,8 +150,10 @@ AUTH_USER_MODEL = 'groups.User'
 
 STATIC_URL = '/static/'
 
-EMAIL_HOST = ''
-EMAIL_PORT = 0
-EMAIL_HOST_USER = ""
-EMAIL_HOST_PASSWORD = ""
-EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = "for_fl_1@mail.ru"
+EMAIL_HOST_PASSWORD = "reliablepassword"
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+

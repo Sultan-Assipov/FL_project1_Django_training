@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.views.generic import View
+from django.core.mail import send_mail
 
 from accounting.models import Attendance, Result
-from groups.models import Group
+from groups.models import Group, Student
 from subjects.models import Subject, Task, Lesson
 
 
@@ -70,7 +71,17 @@ class SubjectTaskView(View):
                         result.student = student
                         result.task = item
                         result.save()
-            subject = Subject.objects.get(id=pk)
+                        param = []
+                        for e in Subject.objects.filter(id=pk):
+                            param.append(e.name)
+                        send_mail(
+                            f"{student.name} вам поступило новое задание",
+                            f"поступило задание {item.name} по предмету {param[0]}",
+                            "for_fl_1@mail.ru",
+                            [student.email],
+                            fail_silently=True
+                        )
+                    subject = Subject.objects.get(id=pk)
             return render(request, 'subjects/info.html', locals())
 
 
