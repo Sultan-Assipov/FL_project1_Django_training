@@ -5,6 +5,9 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     teacher = models.BooleanField(default=False)
+    group = models.BooleanField(default=True)
+    student = models.BooleanField(default=False)
+
 
     class Meta(AbstractUser.Meta):
         swappable = 'AUTH_USER_MODEL'
