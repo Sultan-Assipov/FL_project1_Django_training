@@ -2,13 +2,18 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.views.generic import View
 from django.core.mail import send_mail
+from django.contrib import messages
 
 from accounting.models import Attendance, Result
-from groups.models import Group, Student
+from groups.models import Group, Student, User
 from subjects.models import Subject, Task, Lesson
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class SubjectView(View):
+
+
+class SubjectView(LoginRequiredMixin, View):
+    login_url = '/accounting/login/'
     def get(self, request, pk: int = None):
         if pk is not None:
             subject = Subject.objects.get(id=pk)
@@ -18,6 +23,8 @@ class SubjectView(View):
             return render(request, 'subjects/index.html', locals())
 
     def post(self, request, pk: int = None):
+        if User.group != "teacher":
+            return render(request, "subjects/access_error.html")
         if 'delete' in request.POST:
             subject = Subject.objects.get(id=pk)
             subject.delete()
@@ -37,13 +44,15 @@ class SubjectView(View):
 
 
 class SubjectTaskView(View):
+
     def get(self, request, pk, id: int = None):
         subject = Subject.objects.get(id=pk)
         task = Task.objects.get(id=id)
         return render(request, 'subjects/info.html', locals())
 
     def post(self, request, pk, id: int = None):
-
+        if User.group != "teacher":
+            return render(request, "subjects/access_error.html")
         if 'delete' in request.POST:
 
             task = Task.objects.get(id=id)
@@ -93,6 +102,8 @@ class SubjectLessonView(View):
         return render(request, 'subjects/info.html', locals())
 
     def post(self, request, pk, id: int = None, _redirect: bool = True):
+        if User.group != "teacher":
+            return render(request, "subjects/access_error.html")
         if 'delete' in request.POST:
             lesson = Lesson.objects.get(id=id)
             lesson.delete()

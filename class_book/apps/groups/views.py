@@ -32,6 +32,8 @@ class GroupView(LoginRequiredMixin, View):
             return render(request, 'groups/index.html', locals())
 
     def post(self, request, pk: int = None):
+        if User.group != "teacher":
+            return render(request, "groups/access_error.html")
         if 'delete' in request.POST:
             group = Group.objects.get(id=pk)
             group.delete()

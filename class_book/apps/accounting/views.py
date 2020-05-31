@@ -9,6 +9,7 @@ from .forms import AuthForm
 
 
 class LoginView(View):
+
     def post(self, request):
         username = request.POST['username']
         password = request.POST['password']
